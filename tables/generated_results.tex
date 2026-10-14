@@ -1,0 +1,1069 @@
+\subsection{Comparison with published clustering rules}\label{sec:rules}
+
+\tabref{tab:main} reports every method on 18 instances across
+3 problem sizes, at $\varphi = 100$, two alignment
+levels and three seeds each. Its cost columns are means over the 18
+instances, and its \emph{vs.\ ours} columns are paired on the per-instance
+differences instead, since the instances differ in difficulty by more than the
+methods differ from one another.
+
+\begin{table}[t]\centering
+\sbox{\tabbox}{\small\begin{tabular}{@{}l rrrrr rrrrr@{}}
+\toprule
+& \multicolumn{5}{c}{as published} & \multicolumn{5}{c}{+ descent}\\
+\cmidrule(lr){2-6}\cmidrule(lr){7-11}
+method & travel & tard. & cour. & cost & vs.\ ours & travel & tard. & cour. & cost & vs.\ ours\\
+\midrule
+\textsc{sweep} & 2163 & 833 & 22.7 & 5263 & $-29.3\%$ & 1932 & 35 & 22.7 & 4234 & $-13.3\%$\\
+\textsc{fisher} & 2487 & 578 & 34.0 & 6464 & $-42.6\%$ & 1692 & 12 & 26.6 & 4359 & $-16.1\%$\\
+$k$-means & 2174 & 410 & 34.0 & 5984 & $-38.8\%$ & 1876 & 18 & 28.1 & 4700 & $-21.6\%$\\
+spatio-temporal $k$-means & 2217 & 800 & 34.0 & 6417 & $-43.0\%$ & 1932 & 31 & 28.6 & 4819 & $-22.7\%$\\
+capacitated $k$-means & 2284 & 449 & 34.0 & 6133 & $-40.0\%$ & 1922 & 12 & 28.4 & 4773 & $-22.5\%$\\
+Ward agglomerative & 2176 & 326 & 34.0 & 5902 & $-36.8\%$ & 1822 & 40 & 28.2 & 4684 & $-19.5\%$\\
+\addlinespace[2pt]
+best of six & 2149 & 809 & 22.9 & 5247 & $-28.8\%$ & 1779 & 18 & 23.9 & 4186 & $-12.1\%$\\
+\midrule
+\textbf{this paper} & \multicolumn{5}{c}{} & 1206 & 105 & 23.2 & \textbf{3628} & ---\\
+ALNS & \multicolumn{5}{c}{} & 2040 & 92 & 23.1 & 4438 & $-14.2\%$\\
+\bottomrule\end{tabular}}%
+\setlength{\tabw}{1.00\textwidth}%
+\ifdim\wd\tabbox>\tabw\setlength{\tabw}{\wd\tabbox}\fi
+\begin{minipage}{\tabw}
+\centering
+\caption{$|\mathcal{R}| = 40, 100, 200$ requests, $|\mathcal{K}| = 12, 30, 60$ couriers, $Q_k = 5$, $\varphi = 100$, $\rho = 1$. Cost and its components, means over all instances. \emph{As published} uses the rule in its original form; \emph{+ descent} adds the improvement step of Section~\ref{sec:descent}. \emph{vs.\ ours} is the mean paired percentage cost difference against the proposed method, negative favouring it; each is a Wilcoxon signed-rank test over the same instances, and every one of them has $p<10^{-3}$. \emph{Best of six} takes the cheapest rule on each instance separately, so it is a stricter baseline than any single row. The proposed method and ALNS have no \emph{as published} form, so they appear once. Cost is travel${}+{}$tardiness${}+\varphi\times{}$couriers.}
+\label{tab:main}
+\small\begin{tabular*}{\tabw}{@{\extracolsep{\fill}}l rrrrr rrrrr@{}}
+\toprule
+& \multicolumn{5}{c}{as published} & \multicolumn{5}{c}{+ descent}\\
+\cmidrule(lr){2-6}\cmidrule(lr){7-11}
+method & travel & tard. & cour. & cost & vs.\ ours & travel & tard. & cour. & cost & vs.\ ours\\
+\midrule
+\textsc{sweep} & 2163 & 833 & 22.7 & 5263 & $-29.3\%$ & 1932 & 35 & 22.7 & 4234 & $-13.3\%$\\
+\textsc{fisher} & 2487 & 578 & 34.0 & 6464 & $-42.6\%$ & 1692 & 12 & 26.6 & 4359 & $-16.1\%$\\
+$k$-means & 2174 & 410 & 34.0 & 5984 & $-38.8\%$ & 1876 & 18 & 28.1 & 4700 & $-21.6\%$\\
+spatio-temporal $k$-means & 2217 & 800 & 34.0 & 6417 & $-43.0\%$ & 1932 & 31 & 28.6 & 4819 & $-22.7\%$\\
+capacitated $k$-means & 2284 & 449 & 34.0 & 6133 & $-40.0\%$ & 1922 & 12 & 28.4 & 4773 & $-22.5\%$\\
+Ward agglomerative & 2176 & 326 & 34.0 & 5902 & $-36.8\%$ & 1822 & 40 & 28.2 & 4684 & $-19.5\%$\\
+\addlinespace[2pt]
+best of six & 2149 & 809 & 22.9 & 5247 & $-28.8\%$ & 1779 & 18 & 23.9 & 4186 & $-12.1\%$\\
+\midrule
+\textbf{this paper} & \multicolumn{5}{c}{} & 1206 & 105 & 23.2 & \textbf{3628} & ---\\
+ALNS & \multicolumn{5}{c}{} & 2040 & 92 & 23.1 & 4438 & $-14.2\%$\\
+\bottomrule\end{tabular*}
+\end{minipage}
+\end{table}
+
+The \emph{vs.\ ours} columns of \tabref{tab:main} pair the proposed method
+against each of the six rules separately and against the best of them. The
+comparison we lead with is the last, and it is the strictest: on each instance
+the baseline is whichever of the six is cheapest \emph{on that instance}, so
+the margin against it is necessarily smaller than the margin against any rule
+taken alone, as the spread of those rows shows. Against that baseline our proposed method is
+29\% cheaper with the six as published, winning 18
+of 18 instances. Giving the six our own descent narrows that to
+12.1\% ($p<10^{-3}$, still 18/18). The two
+figures measure different things. The
+16.7 points between them are what a generic
+improvement step recovers for an existing rule. The
+12.1\% that survives it is the contribution of
+grouping on the marginal cost of~\eqref{eq:marginal}, measured with the
+improvement step common to both sides, and it is the figure the rest of this
+section builds on.
+
+
+The cost difference behind that 12.1\% is the sum of three
+terms of the objective~\eqref{eq:globalobj} that move in different directions.
+Pooled over the 18 instances and measured in the units of that objective,
+our proposed method saves $573$ in travel, gives up $87$ in
+tardiness and opens $0.72$ fewer couriers on average,
+worth $72$ at $\varphi=100$; the three account exactly
+for the $558$ it saves in cost. The advantage is therefore a
+large reduction in travel bought with a small concession in lateness, and not a
+uniform improvement across the objective. The margin also grows with instance size, and
+\tabref{tab:bysize} gives it by size against both baselines. Against the six
+strengthened rules it is $-8.9\%$ at $|\mathcal{R}|=40$, $-13.1\%$ at $|\mathcal{R}|=100$, $-14.4\%$ at $|\mathcal{R}|=200$.
+
+\begin{table}[t]\centering
+\sbox{\tabbox}{\small\begin{tabular}{@{}r rrr rrr@{}}\toprule
+& \multicolumn{3}{c}{vs.\ best of six $+$ descent} & \multicolumn{3}{c}{vs.\ ALNS}\\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+$|\mathcal{R}|$ & travel & cour. & cost & travel & cour. & cost\\\midrule
+$40$ & $-9.3\%$ & $-8.9\%$ & $-8.9\%$ & $-3.6\%$ & $-3.7\%$ & $-4.1\%$\\
+$100$ & $-32.9\%$ & $+1.1\%$ & $-13.1\%$ & $-37.4\%$ & $+0.9\%$ & $-17.6\%$\\
+$200$ & $-36.4\%$ & $-3.0\%$ & $-14.4\%$ & $-47.1\%$ & $+1.3\%$ & $-20.8\%$\\
+\bottomrule\end{tabular}}%
+\setlength{\tabw}{0.80\textwidth}%
+\ifdim\wd\tabbox>\tabw\setlength{\tabw}{\wd\tabbox}\fi
+\begin{minipage}{\tabw}
+\centering
+\caption{$|\mathcal{R}| = 40, 100, 200$ requests, $|\mathcal{K}| = 12, 30, 60$ couriers, $Q_k = 5$, $\varphi = 100$, $\rho = 1$. Paired differences by problem size, on the instances of \tabref{tab:main}. Each entry is the mean of the per-instance percentage differences at that size, negative favouring the proposed method. \emph{Best of six} is the cheapest of the six rules carrying our descent on that instance. Six instances at each size, two alignment levels by three seeds. A tardiness column is omitted because both baselines are close to punctual here, so a ratio against their tardiness is set by the instances where it is almost zero rather than by the difference; the pooled difference in the units of the objective is given in the text.}
+\label{tab:bysize}
+\small\begin{tabular*}{\tabw}{@{\extracolsep{\fill}}r rrr rrr@{}}\toprule
+& \multicolumn{3}{c}{vs.\ best of six $+$ descent} & \multicolumn{3}{c}{vs.\ ALNS}\\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+$|\mathcal{R}|$ & travel & cour. & cost & travel & cour. & cost\\\midrule
+$40$ & $-9.3\%$ & $-8.9\%$ & $-8.9\%$ & $-3.6\%$ & $-3.7\%$ & $-4.1\%$\\
+$100$ & $-32.9\%$ & $+1.1\%$ & $-13.1\%$ & $-37.4\%$ & $+0.9\%$ & $-17.6\%$\\
+$200$ & $-36.4\%$ & $-3.0\%$ & $-14.4\%$ & $-47.1\%$ & $+1.3\%$ & $-20.8\%$\\
+\bottomrule\end{tabular*}
+\end{minipage}
+\end{table}
+\subsection{The grouping cost examined}\label{sec:groupingcost}\titledParagraph{Non-additivity of the routing cost.}\label{sec:interaction}
+Section~\ref{sec:guarantees} identifies the pairwise interaction of
+$J(\cdot,k)$ as the exact measure of the additivity that the assignment program
+assumes and routing does not have. This subsection measures it. We sampled 12,000 second differences
+$I(\mathcal{S};r,r')=J(\mathcal{S}\cup\{r,r'\})-J(\mathcal{S}\cup\{r\})
+-J(\mathcal{S}\cup\{r'\})+J(\mathcal{S})$ with the exact router, in which
+$\mathcal{S}$ is a set of requests a courier already holds and $r,r'$ are two
+further requests it might be given.
+\tabref{tab:interaction} reports them by
+$|\mathcal{S}|$, which runs from $0$ to $Q_k-2=3$: all of
+$\mathcal{S}\cup\{r,r'\}$ has to fit one courier, so a base set of
+4 leaves no room for a pair.
+
+\begin{table}[t]\centering
+\sbox{\tabbox}{\small\begin{tabular}{@{}r@{\;\;} r@{\;\;} r@{\;\;} r@{\;\;} r@{}}\toprule
+$|\mathcal{S}|$ & samples & zero & median & 95th pct.\\\midrule
+$0$ & 3,054 & $0\%$ & $0.538$ & $0.655$\\
+$1$ & 3,068 & $27\%$ & $0.201$ & $0.462$\\
+$2$ & 2,944 & $39\%$ & $0.074$ & $0.344$\\
+$3$ & 2,934 & $45\%$ & $0.024$ & $0.261$\\
+\bottomrule\end{tabular}}%
+\setlength{\tabw}{0.80\textwidth}%
+\ifdim\wd\tabbox>\tabw\setlength{\tabw}{\wd\tabbox}\fi
+\begin{minipage}{\tabw}
+\centering
+\caption{$|\mathcal{R}| = 40$ requests, $|\mathcal{K}| = 12$ couriers, $Q_k = 5$, $\varphi = 100$, $\rho = 1$. The interaction $I(\mathcal{S};r,r')$ of~\eqref{eq:interaction}, computed with the exact router on sampled triples $(\mathcal{S},r,r')$ and grouped by $|\mathcal{S}|$, the number of requests the courier already holds. $I$ is zero for every $\mathcal{S}$, $r$ and $r'$ exactly when a courier's routing cost is additive across its requests, which is what the assignment program assumes. \emph{Zero} is the fraction of samples whose $I$ vanishes exactly; \emph{median} and \emph{95th pct.} give $|I|$ relative to the marginal it perturbs.}
+\label{tab:interaction}
+\small\begin{tabular*}{\tabw}{@{\extracolsep{\fill}}r@{\;\;} r@{\;\;} r@{\;\;} r@{\;\;} r@{}}\toprule
+$|\mathcal{S}|$ & samples & zero & median & 95th pct.\\\midrule
+$0$ & 3,054 & $0\%$ & $0.538$ & $0.655$\\
+$1$ & 3,068 & $27\%$ & $0.201$ & $0.462$\\
+$2$ & 2,944 & $39\%$ & $0.074$ & $0.344$\\
+$3$ & 2,934 & $45\%$ & $0.024$ & $0.261$\\
+\bottomrule\end{tabular*}
+\end{minipage}
+\end{table}
+
+The routing cost is not additive across requests, and the table says by how
+much. The typical departure from additivity is small, median
+7.3 time units against a mean of 171 for
+serving one of these sets, and its sign is close to balanced,
+35\% negative against 38\% positive, so the errors a courier
+accumulates over its requests partly cancel rather than compound. The mean
+relative interaction is $-0.9\%$. In
+27\% of samples it vanishes exactly, which happens when the two requests
+never compete for a position in the route: each is inserted where the other
+leaves the schedule untouched, so what one adds does not depend on whether the
+other is there. The worst case is different: the largest interaction sampled is
+307 time units, so Section~\ref{sec:guarantees} claims nothing about how
+accurately any one courier's requests are costed.
+
+Where the interaction is measured matters more than its average size, and that
+settles a design choice we had made on intuition. It falls sharply with the size
+of the set the marginal is measured in: at $|\mathcal{S}|=0$ no sample vanishes
+and the median interaction is $0.54$ of the marginal it
+perturbs, while at $|\mathcal{S}|=3$ nearly half
+vanish and the median is $0.024$, a factor of
+23 apart. A
+marginal measured against a courier's \emph{current} workload is therefore far
+more accurate than one measured against an empty courier. That is
+what~\eqref{eq:marginal} does, and it is also why the outer loop recomputes
+$C_{rk}$ at every pass: the set of requests a courier holds changes from one
+pass to the next, and a marginal measured against requests the courier no longer
+holds is measured in the wrong place.
+
+\titledParagraph{Temporal criteria in the grouping cost.}\label{sec:temporal}\label{sec:slack}
+In Section~\ref{sec:cost} we argued that a temporal coordinate is the wrong
+thing to group by, because it draws together the requests that compete for a
+courier rather than those it can serve in turn. That claim can be tested without
+reference to our proposed method at all, because two of the six rules differ
+in exactly
+one respect: $k$-means groups requests by their position, and spatio-temporal
+$k$-means adds a scaled time coordinate to the same algorithm. If grouping requests that fall due together
+helped, the second would be the better of the two. It is not, and where it
+fails is exactly where the argument predicts, as
+\tabref{tab:temporal} shows.
+
+\begin{table}[t]\centering
+\sbox{\tabbox}{\small\begin{tabular}{@{}l rr r rr@{}}\toprule
+& \multicolumn{2}{c}{tardiness} & & \multicolumn{2}{c}{cost}\\
+\cmidrule(lr){2-3}\cmidrule(lr){5-6}
+instances & $k$-m. & s.-t. & $p$ & $k$-m. & s.-t.\\\midrule
+aligned & 575 & 743 & $0.164$ & 6038 & 6251\\
+misaligned & 245 & 857 & $0.004$ & 5930 & 6583\\
+\bottomrule\end{tabular}}%
+\setlength{\tabw}{0.80\textwidth}%
+\ifdim\wd\tabbox>\tabw\setlength{\tabw}{\wd\tabbox}\fi
+\begin{minipage}{\tabw}
+\centering
+\caption{$|\mathcal{R}| = 40, 100, 200$ requests, $|\mathcal{K}| = 12, 30, 60$ couriers, $Q_k = 5$, $\varphi = 100$, $\rho = 1$. $k$-means grouping with and without a time coordinate, paired on identical instances. \emph{$k$-m.}\ is $k$-means on request midpoints; \emph{s.-t.}\ is spatio-temporal $k$-means, the same algorithm carrying the extra time coordinate of Section~\ref{sec:setup} at temporal weight $\omega=1$, so the two differ in that coordinate alone. Misaligned instances are those where spatial and temporal structure disagree, so the time coordinate carries information the spatial one does not.}
+\label{tab:temporal}
+\small\begin{tabular*}{\tabw}{@{\extracolsep{\fill}}l rr r rr@{}}\toprule
+& \multicolumn{2}{c}{tardiness} & & \multicolumn{2}{c}{cost}\\
+\cmidrule(lr){2-3}\cmidrule(lr){5-6}
+instances & $k$-m. & s.-t. & $p$ & $k$-m. & s.-t.\\\midrule
+aligned & 575 & 743 & $0.164$ & 6038 & 6251\\
+misaligned & 245 & 857 & $0.004$ & 5930 & 6583\\
+\bottomrule\end{tabular*}
+\end{minipage}
+\end{table}
+
+On instances where space and time disagree, adding the time coordinate
+multiplies tardiness by $3.5$ ($p=0.004$) and raises total cost by
+$11.4\%$ ($p=0.008$). On instances where the two agree
+the effect is not significant ($p=0.164$), which is what one would
+expect: there the time coordinate merely repeats what the spatial one already
+says, so it can do little harm and no good. The published remedy for time
+windows in a clustering rule therefore makes the rule worse precisely when it is
+supposed to help, and the reason is the one given in
+Section~\ref{sec:cost}: a courier serves its group in sequence, so requests
+that fall due together contend for it.
+
+
+The time coordinate carries a weight, so the natural objection is that the
+weight was set badly. \figrefp{fig:sensitivity}{c} sweeps the
+temporal weight $\omega$ of Section~\ref{sec:setup} over 8 values. No
+setting helps by more than noise. The best of them in the rule's published form
+is the smallest weight tried, $\omega=0.125$, at
+$-1.0\%$ against $\omega=0$ on
+7 of 12 instances
+($p=0.074$). From $\omega=1$ upward every weight is
+significantly worse, and the cost climbs to $+18\%$ at
+$\omega=8$ with tardiness climbing alongside it, from
+286 to 871.
+Carried by our descent the same rule is flat to within 4\%, which is
+the descent repairing the grouping rather than the weight becoming useful.
+
+
+That was the crude way of putting time into a grouping cost. The sophisticated one
+concedes what Section~\ref{sec:cost} argues, that minimising a temporal distance
+groups the requests that compete for a courier, and introduces time another
+way: it
+charges each pair of requests the courier cannot chain, by
+$g_{\mathrm{sum}}$ or $g_{\min}$ of~\eqref{eq:chaincharge}. That is the
+criterion most likely to be proposed in place of the marginal cost, so it is the
+one worth measuring. Like the marginal cost of~\eqref{eq:marginal}, this is a
+grouping cost, and it is used in its place, so the comparison is between two
+answers to the same question. It is built and measured exactly as the six
+published rules are, on the same 12 instances.
+
+The chaining slack of Section~\ref{sec:cost} is directional.
+$\operatorname{slack}(r\!\to\!r')$ is the spare time left if the courier
+serves $r$ and then $r'$, and $\operatorname{slack}(r'\!\to\!r)$ is a
+value computed in the other direction. A grouping cost charges a pair rather than an ordered pair, so
+the two directions have to be combined into one, and there are two ways to do it.
+Summing them charges a pair when \emph{either} order fails; taking their
+minimum charges it only when \emph{both} do. The second is the correct reading,
+since the courier chooses the best order, and both are measured below.
+
+The two symmetrisations are not variants of one quantity, and correlating each
+against the temporal separation $|\tau_r-\tau_{r'}|$ of
+Section~\ref{sec:cost} shows why. Taken over all pairs of requests in these
+instances, $g_{\mathrm{sum}}$ of~\eqref{eq:chaincharge} correlates $+0.95$ with
+separation: it is, to a good approximation, a measure of how far apart in time
+two requests are, so minimising it groups requests that fall due together, which
+is what Section~\ref{sec:cost} argues against. $g_{\min}$ correlates
+$-0.74$, of the opposite sign, scoring requests far apart in
+time as the compatible ones. The correction does what it claims.
+\tabref{tab:slack} reports what each symmetrisation
+costs.
+
+\begin{table}[t]\centering
+\sbox{\tabbox}{\small\begin{tabular}{@{}l@{\;} r@{\;\;}r@{\;\;}r@{\;\;} r@{\;\;} r@{}}\toprule
+grouping cost & travel & tard. & cour. & cost & vs.\ ours\\\midrule
+slack, sum & 2221 & 1387 & 15.2 & 5133 & $+114.8\%$\\
+slack, min & 2218 & 1673 & 16.7 & 5558 & $+134.3\%$\\
+slack, sum $+$ desc. & 1291 & 11 & 14.7 & 2768 & $+17.2\%$\\
+slack, min $+$ desc. & 1245 & 6 & 15.2 & 2776 & $+16.5\%$\\
+best published $+$ desc. & 1184 & 13 & 14.7 & 2664 & $+12.6\%$\\
+\midrule
+marginal cost (ours) & 873 & 42 & 14.3 & 2349 & ---\\
+\bottomrule\end{tabular}}%
+\setlength{\tabw}{0.80\textwidth}%
+\ifdim\wd\tabbox>\tabw\setlength{\tabw}{\wd\tabbox}\fi
+\begin{minipage}{\tabw}
+\centering
+\caption{$|\mathcal{R}| = 40, 100$ requests, $|\mathcal{K}| = 12, 30$ couriers, $Q_k = 5$, $\varphi = 100$, $\rho = 1$. Grouping by pairwise chaining slack, in both symmetrisations, against the marginal cost. \emph{Sum} charges both orders of a pair, \emph{min} only the better one. Each is reported as published and with our descent, and all are routed by the same exact router.}
+\label{tab:slack}
+\small\begin{tabular*}{\tabw}{@{\extracolsep{\fill}}l@{\;} r@{\;\;}r@{\;\;}r@{\;\;} r@{\;\;} r@{}}\toprule
+grouping cost & travel & tard. & cour. & cost & vs.\ ours\\\midrule
+slack, sum & 2221 & 1387 & 15.2 & 5133 & $+114.8\%$\\
+slack, min & 2218 & 1673 & 16.7 & 5558 & $+134.3\%$\\
+slack, sum $+$ desc. & 1291 & 11 & 14.7 & 2768 & $+17.2\%$\\
+slack, min $+$ desc. & 1245 & 6 & 15.2 & 2776 & $+16.5\%$\\
+best published $+$ desc. & 1184 & 13 & 14.7 & 2664 & $+12.6\%$\\
+\midrule
+marginal cost (ours) & 873 & 42 & 14.3 & 2349 & ---\\
+\bottomrule\end{tabular*}
+\end{minipage}
+\end{table}
+
+Nonetheless, correcting the symmetrisation does not rescue the criterion. As published the
+minimum is if anything the worse of the two
+($+134.3\%$ against ours, versus
+$+114.8\%$ for the sum), and once
+both are given our descent they are statistically indistinguishable from each
+other ($-0.5\%$, $p=0.733$) and both remain worse than
+the marginal cost by $+17.2\%$ and $+16.5\%$
+($p<10^{-3}$). They are also worse than the best published rule carrying
+the same descent, so neither reaches the rules the idea was meant to improve on.
+
+The components say where the difference sits, and it is not punctuality. Carrying
+our descent, the slack rules are the \emph{more} punctual of the two, with
+tardiness 6 and 11 against our 42, but they travel
+1245 and 1291 against our 873 and open more couriers. At
+$\rho=1$ that trade runs about ten to one against them: the better of the two
+saves 36 units of lateness and pays 372 units of
+extra distance for it. Section~\ref{sec:rho} shows the same trade against the
+published rules, across a twentyfold range in $\rho$.
+
+Getting the sign right is therefore not enough, and that is a separate point from
+the correlation. A charge on pairs
+asks whether two requests can follow one another; what a courier is actually
+charged is the cost of a \emph{path} through all of them, and no sum over pairs
+recovers it, because what a pair costs depends on what else the courier is
+carrying and where the path has reached. The failure is not in how the two
+directions were combined, which the minimum repairs, but in charging pairs at
+all. That is the quantity \eqref{eq:marginal} evaluates directly.
+
+In the proposed method time does not enter the grouping cost directly, as it does
+in both criteria above. It enters through the marginal cost
+of~\eqref{eq:marginal}, which prices a request by the lateness the courier would
+actually incur on the route it would then take, at the rate $\rho$ the objective
+sets. Our proposed method therefore spends on punctuality exactly what the
+objective says it is worth. That is why it is the
+less punctual of the two here and still the cheaper, and why the same mechanism
+reverses when lateness is priced higher: Section~\ref{sec:rho} follows it across
+a twentyfold range in $\rho$. A criterion with no $\rho$ in it cannot make that
+trade in either direction.
+
+\subsection{Sensitivity to instance conditions}\label{sec:sensitivity}
+\titledParagraph{Spatio-temporal misalignment.}\label{sec:alignaxis}
+The comparison so far uses the two ends of the alignment axis, $\alpha=1$ and
+$\alpha=0$. Misalignment is measured on each instance rather than set by
+$\alpha$, so intermediate values place instances along the axis and the margin
+can be read as a function of it. \figrefp{fig:sensitivity}{b} sweeps
+$\alpha$ over 5 levels with 8
+seeds each.
+
+
+The margin over the strengthened rules grows monotonically with realised
+misalignment: the Spearman rank correlation between the two is
+$-0.90$ ($p=0.037$), negative because a wider margin
+is a more negative cost difference. Our proposed method is cheaper on every
+instance at every level ($p=0.008$ at each). The bars on the right axis of the same panel
+show the effect without reference to our proposed method, since they compare
+only the
+two baselines: the tardiness spatio-temporal $k$-means pays for its time
+coordinate, relative to plain $k$-means, falls from $3.8\times$ at the
+misaligned end to $1.2\times$ where space and time agree. That
+ordering is what Section~\ref{sec:cost} predicts. Where the time axis repeats
+what the spatial one already says, adding it costs little; where it carries
+information the spatial axis does not, minimising distance along it concentrates
+the requests that compete for a courier.
+
+One value from this sweep is used later. The adapted Li \& Lim batches sit at a
+realised misalignment of $0.61$, beside our $\alpha=0$ setting at the hard end
+of the axis, so the smaller margin Section~\ref{sec:lilim} reports on them is
+not explained by their being temporally easy.
+
+\titledParagraph{The penalty rate.}\label{sec:rho}
+In Section~\ref{sec:cost} we argued that a courier visits its requests one after
+another, so two requests whose windows coincide compete for the same
+courier-minute, and that grouping by temporal proximity therefore collects
+exactly those competing pairs onto one courier. Grouping on the marginal cost
+of~\eqref{eq:marginal} instead of on temporal proximity might therefore be
+expected to buy punctuality. However, what it buys is distance: travel falls and
+lateness does not. One explanation would be
+that $\rho=1$ makes lateness too cheap to be worth buying, in which case pricing
+it higher should close the gap, so we swept $\rho$ over a twentyfold range. It enters every part of the
+method: the exact router sequences with it, the marginal costs
+of~\eqref{eq:marginal} are computed with it, and the descent decides with it.
+\tabref{tab:rho} reports the sweep, and
+\figrefp{fig:sensitivity}{d} plots it beside the tardiness of both methods.
+
+\begin{table}[t]\centering
+\sbox{\tabbox}{\small\begin{tabular}{@{}r@{\;\;} r@{\;\;}r@{\;\;} r@{\;\;}r@{\;\;} r@{\;\;} r@{}}\toprule
+& \multicolumn{2}{c}{tardiness} & \multicolumn{2}{c}{travel} & & \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+$\rho$ & ours & base & ours & base & cost & $p$\\\midrule
+$0.5$ & 65.66 & 29.41 & 564 & 696 & $-11.1\%$ & $0.008$\\
+$1$ & 14.34 & 7.45 & 606 & 694 & $-9.1\%$ & $0.008$\\
+$2$ & 4.46 & 2.82 & 645 & 739 & $-8.7\%$ & $0.008$\\
+$5$ & 0.90 & 0.18 & 637 & 740 & $-9.3\%$ & $0.008$\\
+$10$ & 0.73 & 0.03 & 644 & 720 & $-8.2\%$ & $0.008$\\
+\bottomrule\end{tabular}}%
+\setlength{\tabw}{0.80\textwidth}%
+\ifdim\wd\tabbox>\tabw\setlength{\tabw}{\wd\tabbox}\fi
+\begin{minipage}{\tabw}
+\centering
+\caption{$|\mathcal{R}| = 40$ requests, $|\mathcal{K}| = 12$ couriers, $Q_k = 5$, $\varphi = 100$, $\rho = 1$. Sweeping the penalty rate $\rho$, which prices earliness and tardiness alike in~\eqref{eq:globalobj}. \emph{Base} is the best of the six rules carrying our descent on each instance. Tardiness is a mean over the instances, so a small value is an average of instances that are exactly punctual and one or two that are not, rather than a small lateness everywhere. The proposed method responds to $\rho$ as it should, and its advantage stays travel at every $\rho$.}
+\label{tab:rho}
+\small\begin{tabular*}{\tabw}{@{\extracolsep{\fill}}r@{\;\;} r@{\;\;}r@{\;\;} r@{\;\;}r@{\;\;} r@{\;\;} r@{}}\toprule
+& \multicolumn{2}{c}{tardiness} & \multicolumn{2}{c}{travel} & & \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+$\rho$ & ours & base & ours & base & cost & $p$\\\midrule
+$0.5$ & 65.66 & 29.41 & 564 & 696 & $-11.1\%$ & $0.008$\\
+$1$ & 14.34 & 7.45 & 606 & 694 & $-9.1\%$ & $0.008$\\
+$2$ & 4.46 & 2.82 & 645 & 739 & $-8.7\%$ & $0.008$\\
+$5$ & 0.90 & 0.18 & 637 & 740 & $-9.3\%$ & $0.008$\\
+$10$ & 0.73 & 0.03 & 644 & 720 & $-8.2\%$ & $0.008$\\
+\bottomrule\end{tabular*}
+\end{minipage}
+\end{table}
+
+As $\rho$ rises from 0.5 to 10, the mean tardiness of our proposed method
+falls from 65.7 to 0.7 and its mean travel rises from 564 to
+644.
+The comparison with the baselines does not move with it. At every $\rho$ our
+solutions are the later of the two, by roughly a factor of two while lateness is
+still material and by less than a unit once $\rho$ has driven both near zero, and
+at every $\rho$ our travel is lower, by $76$ to $132$ units.
+The cost advantage is flat across the range, $-11.1\%$ at
+$\rho=0.5$ and $-8.2\%$ at $\rho=10$, on every instance at
+every $\rho$. That total is the sum of two terms moving in opposite directions
+and by very different amounts: measured in the units of
+the objective~\eqref{eq:globalobj}, the travel our proposed method saves
+outweighs the lateness it gives up for that saving by a factor of 7 to
+29 across the sweep. The cost is therefore lower than every one of the
+six strengthened rules at every penalty rate, and the gain is a large saving
+in travel bought with a small concession in tardiness.
+
+Chainability and compactness are the same property. A group whose requests chain
+is one whose courier can leave each request and reach the next without a long
+empty run, which is a group with short travel between its stops, and the marginal
+cost of~\eqref{eq:marginal} selects for it directly. Punctuality is available to
+either method once $\rho$ makes it worth buying, both driving lateness towards
+zero by $\rho=10$; what differs is the distance each pays to get there. The
+contribution is therefore the grouping criterion and its effect on cost, and not
+an improvement in punctuality.
+
+\subsection{The dispatch charge and the fleet}\label{sec:fleetcharge}
+\titledParagraph{Behaviour without a dispatch charge.}\label{sec:phizero}
+Everything above prices a dispatched courier at $\varphi = 100$. Setting
+$\varphi = 0$ removes the fleet decision from the objective: any number of
+couriers may be opened at no charge, and the problem reduces to minimising
+travel plus lateness. Since the dispatch charge is what no published clustering
+rule can respond to, this is the setting in which our advantage over them should
+be most at risk, and \tabref{tab:phizero} repeats the whole comparison there.
+
+\begin{table}[t]\centering
+\sbox{\tabbox}{\small\begin{tabular}{@{}l rrrr rrrr@{}}
+\toprule
+& \multicolumn{4}{c}{as published} & \multicolumn{4}{c}{+ descent}\\
+\cmidrule(lr){2-5}\cmidrule(lr){6-9}
+method & travel & tard. & cour. & cost & travel & tard. & cour. & cost\\
+\midrule
+\textsc{sweep} & 2163 & 833 & 22.7 & 2996 & 1786 & 8 & 30.0 & 1794\\
+\textsc{fisher} & 2487 & 578 & 34.0 & 3064 & 1605 & 5 & 32.4 & 1610\\
+$k$-means & 2174 & 410 & 34.0 & 2584 & 1829 & 11 & 31.8 & 1839\\
+spatio-temporal $k$-means & 2217 & 800 & 34.0 & 3017 & 1936 & 28 & 32.8 & 1964\\
+capacitated $k$-means & 2284 & 449 & 34.0 & 2733 & 1868 & 10 & 32.1 & 1878\\
+Ward agglomerative & 2176 & 326 & 34.0 & 2502 & 1867 & 40 & 32.1 & 1907\\
+\midrule
+\textbf{this paper} & \multicolumn{4}{c}{} & 1095 & 10 & 31.5 & 1106\\
+ALNS & \multicolumn{4}{c}{} & 1104 & 40 & 30.8 & 1144\\
+\bottomrule\end{tabular}}%
+\setlength{\tabw}{0.80\textwidth}%
+\ifdim\wd\tabbox>\tabw\setlength{\tabw}{\wd\tabbox}\fi
+\begin{minipage}{\tabw}
+\centering
+\caption{$|\mathcal{R}| = 40, 100, 200$ requests, $|\mathcal{K}| = 12, 30, 60$ couriers, $Q_k = 5$, $\varphi = 0$, $\rho = 1$. The same instances with no dispatch charge, $\varphi = 0$, so cost is travel${}+{}$tardiness alone and the courier count is free. Compare with \tabref{tab:main}.}
+\label{tab:phizero}
+\small\begin{tabular*}{\tabw}{@{\extracolsep{\fill}}l rrrr rrrr@{}}
+\toprule
+& \multicolumn{4}{c}{as published} & \multicolumn{4}{c}{+ descent}\\
+\cmidrule(lr){2-5}\cmidrule(lr){6-9}
+method & travel & tard. & cour. & cost & travel & tard. & cour. & cost\\
+\midrule
+\textsc{sweep} & 2163 & 833 & 22.7 & 2996 & 1786 & 8 & 30.0 & 1794\\
+\textsc{fisher} & 2487 & 578 & 34.0 & 3064 & 1605 & 5 & 32.4 & 1610\\
+$k$-means & 2174 & 410 & 34.0 & 2584 & 1829 & 11 & 31.8 & 1839\\
+spatio-temporal $k$-means & 2217 & 800 & 34.0 & 3017 & 1936 & 28 & 32.8 & 1964\\
+capacitated $k$-means & 2284 & 449 & 34.0 & 2733 & 1868 & 10 & 32.1 & 1878\\
+Ward agglomerative & 2176 & 326 & 34.0 & 2502 & 1867 & 40 & 32.1 & 1907\\
+\midrule
+\textbf{this paper} & \multicolumn{4}{c}{} & 1095 & 10 & 31.5 & 1106\\
+ALNS & \multicolumn{4}{c}{} & 1104 & 40 & 30.8 & 1144\\
+\bottomrule\end{tabular*}
+\end{minipage}
+\end{table}
+
+The advantage over the clustering rules does not require the dispatch charge,
+and is larger without one. Against the six rules as published our proposed method is
+$-49.9\%$ (18/18 instances, $p<10^{-3}$), and
+against the same rules carrying our descent $-26.5\%$
+(18/18, $p<10^{-3}$), against $-12.1\%$ for the
+same comparison at $\varphi = 100$. The apparent strengthening is largely
+arithmetic: at $\varphi = 100$ every method pays a fixed term of $\varphi$ times
+the couriers it opens, 23 on average over these instances, a large
+common addend that compresses every relative difference. In absolute terms nothing changes, and the travel column shows it: our proposed
+method is close to ALNS there and the rules are not.
+
+
+The courier counts separate the methods by whether the fleet size is a decision
+at all. The number of groups is an input to every published rule, so each of the
+6 dispatches the same couriers whichever charge applies: the counts in the \emph{as published} block of \tabref{tab:main}
+and of \tabref{tab:phizero} are identical. Our proposed method opens
+8.3 more couriers when the charge is lifted and ALNS
+7.8 more, both responding to what the objective now prices. The
+strengthened rules respond as well, by 3.7 to 7.3
+couriers, because the descent they carry minimises the objective, and the
+objective charges $\varphi$ for every courier opened.
+
+This is the form in which the fleet result holds. It is a claim about
+responsiveness to $\varphi$ and it separates our proposed method from the
+published rules, not from ALNS. It is not a claim about distance from the
+capacity floor of Section~\ref{sec:problemFormulation}: \textsc{sweep} fills
+each courier to $Q_k$ in angular order, so it opens
+$\lceil|\mathcal{R}|/\max_k Q_k\rceil$ couriers exactly, sitting on the floor
+at $\varphi=100$ and at $\varphi=0$ alike.
+
+
+Against ALNS the two are not statistically distinguishable: pooled
+$-0.5\%$ with 11 wins in 18, $p=0.167$. That
+pooled figure hides a trend with size, $+9.6\%$ at $|\mathcal{R}|=40$, $-5.8\%$ at $|\mathcal{R}|=100$, $-5.2\%$ at $|\mathcal{R}|=200$, so ALNS is ahead on the
+smallest instances and behind on the larger ones.
+Under a dispatch charge the decomposition beats ALNS at matched
+wall-clock and ALNS does not catch up given far longer
+(Section~\ref{sec:crossover}); with couriers free it is a tie at matched
+wall-clock, and a search given more time would be expected to pass us, since
+what remains in the objective is exactly the route quality a search over
+complete solutions is good at.
+
+Against every published clustering rule, in its own form and strengthened with
+our improvement step, our proposed method is cheaper on all 18 instances
+at $\varphi = 100$ and on all 18 at $\varphi = 0$, and against ALNS it is
+ahead under a dispatch charge and level without one. Both comparisons use the
+three problem sizes of \tabref{tab:main}. Section~\ref{sec:scaling} takes the
+one against the clustering rules to $1000$ requests and
+$300$ couriers, where most of our runtime is work that is
+independent per courier: our proposed method returns in
+50\,s against
+821\,s for the strongest clustering baseline, at a cost
+34\% below
+it.
+
+\titledParagraph{The charge swept.}\label{sec:phisweep}
+Section~\ref{sec:rules} prices a dispatched courier at $\varphi=100$ and
+Section~\ref{sec:phizero} at $\varphi=0$. Sweeping $\varphi$ over
+6 levels from $0$ to $400$ at
+$|\mathcal{R}|=40$ gives the shape between them;
+\figrefp{fig:sensitivity}{a} plots the result. The margin over the
+strengthened rules is monotone and \emph{largest} where the charge is
+smallest, $-15.1\%$ at $\varphi=0$ against
+$-4.2\%$ at $\varphi=400$, which is the compression
+effect of Section~\ref{sec:phizero} seen across the whole range rather than at
+its ends: a term every method pays alike grows with $\varphi$ and shrinks every
+ratio. Our fleet falls from 11.2
+couriers at $\varphi=0$ to the capacity floor of $8$ by
+$\varphi=100$ and stays there, while no rule in its published form moves
+at any charge. Against ALNS the sign changes
+inside the range: we are behind at $\varphi=0$ and ahead from
+$\varphi=50$ upwards, which locates the crossover the earlier
+sections describe.
+
+\begin{table}[t]\centering
+\sbox{\tabbox}{\small\begin{tabular}{@{}rr rrr r@{}}\toprule
+& & \multicolumn{3}{c}{vs.\ rules $+$ descent} & vs.\ ALNS\\
+\cmidrule(lr){3-5}\cmidrule(lr){6-6}
+$|\mathcal{K}|$ & $|\mathcal{R}|$ & mean & wins & $p$ & mean\\\midrule
+$6$ & $20$ & $-4.1\%$ & 6/8 & $0.055$ & $+1.7\%$\\
+$9$ & $32$ & $-6.5\%$ & 7/8 & $0.039$ & $-1.1\%$\\
+$12$ & $40$ & $-9.1\%$ & 8/8 & $0.008$ & $-4.3\%$\\
+$18$ & $60$ & $-12.2\%$ & 8/8 & $0.008$ & $-10.7\%$\\
+\bottomrule\end{tabular}}%
+\setlength{\tabw}{0.80\textwidth}%
+\ifdim\wd\tabbox>\tabw\setlength{\tabw}{\wd\tabbox}\fi
+\begin{minipage}{\tabw}
+\centering
+\caption{$|\mathcal{R}| = 20, 32, 40, 60$ requests, $|\mathcal{K}| = 6, 9, 12, 18$ couriers, $Q_k = 5$, $\varphi = 100$, $\rho = 1$. The advantage widens with the fleet. The design rule of Section~\ref{sec:setup} is held fixed, so the workload grows with the fleet. Paired against the best of the six rules carrying our descent, and against ALNS at matched wall-clock, at $\varphi=100$. Negative favours the proposed method.}
+\label{tab:fleet}
+\small\begin{tabular*}{\tabw}{@{\extracolsep{\fill}}rr rrr r@{}}\toprule
+& & \multicolumn{3}{c}{vs.\ rules $+$ descent} & vs.\ ALNS\\
+\cmidrule(lr){3-5}\cmidrule(lr){6-6}
+$|\mathcal{K}|$ & $|\mathcal{R}|$ & mean & wins & $p$ & mean\\\midrule
+$6$ & $20$ & $-4.1\%$ & 6/8 & $0.055$ & $+1.7\%$\\
+$9$ & $32$ & $-6.5\%$ & 7/8 & $0.039$ & $-1.1\%$\\
+$12$ & $40$ & $-9.1\%$ & 8/8 & $0.008$ & $-4.3\%$\\
+$18$ & $60$ & $-12.2\%$ & 8/8 & $0.008$ & $-10.7\%$\\
+\bottomrule\end{tabular*}
+\end{minipage}
+\end{table}
+\titledParagraph{The fleet size.}\label{sec:fleetsweep}
+The design rule of Section~\ref{sec:setup} ties the request count to the
+fleet, so enlarging $|\mathcal{K}|$ enlarges the instance with it and the
+workload per courier is held fixed. \tabref{tab:fleet} sweeps
+$|\mathcal{K}|$ from 6 to 18.
+
+Both margins move monotonically with the fleet: against the strengthened rules
+from $-4.1\%$ at $|\mathcal{K}|=6$ to
+$-12.2\%$ at $|\mathcal{K}|=18$, and against
+ALNS from $+1.7\%$ to
+$-10.7\%$, crossing from behind to ahead. The reason is the
+fleet decision itself: the number of couriers a solution may open grows with
+$|\mathcal{K}|$, so there is more for the assignment program to decide and
+more for a method that cannot decide it to lose.
+
+\subsection{Scaling and parallel structure}\label{sec:scaling}
+\begin{table}[t]\centering
+\sbox{\tabbox}{\small\begin{tabular}{@{}r l rrr r rr@{}}\toprule
+$|\mathcal{R}|$ & method & travel & tard. & cour. & cost & time & assign.\\\midrule
+$100$ & ours & 1117 & 4 & 20.5 & 3171 & 7\,s & 6\,s\\
+ & baseline & 1936 & 20 & 26.5 & 4606 & 1\,s & ---\\
+ & ALNS & 1589 & 25 & 20.5 & 3664 & 11\,s & ---\\
+\addlinespace[2pt]
+$200$ & ours & 1847 & 1 & 40.5 & 5898 & 18\,s & 13\,s\\
+ & baseline & 3246 & 4 & 47.5 & 8000 & 8\,s & ---\\
+ & ALNS & 3235 & 59 & 40.5 & 7344 & 19\,s & ---\\
+\addlinespace[2pt]
+$400$ & ours & 3527 & 14 & 81.0 & 11642 & 31\,s & 20\,s\\
+ & baseline & 7115 & 41 & 104.0 & 17556 & 36\,s & ---\\
+ & ALNS & 6753 & 158 & 80.5 & 14961 & 90\,s & ---\\
+\addlinespace[2pt]
+$1000$ & ours & 7878 & 24 & 201.0 & 28002 & 50\,s & 20\,s\\
+ & baseline & 16448 & 63 & 262.0 & 42711 & 821\,s & ---\\
+ & ALNS & 23518 & 2602 & 200.5 & 46170 & 1483\,s & ---\\
+\bottomrule\end{tabular}}%
+\setlength{\tabw}{0.80\textwidth}%
+\ifdim\wd\tabbox>\tabw\setlength{\tabw}{\wd\tabbox}\fi
+\begin{minipage}{\tabw}
+\centering
+\caption{$|\mathcal{R}| = 100, 200, 400, 1000$ requests, $|\mathcal{K}| = 30, 60, 120, 300$ couriers, $Q_k = 5$, $\varphi = 100$, $\rho = 1$. Two misaligned instances at each size; those at $|\mathcal{R}| = 100$ and $200$ are also in \tabref{tab:main}, those at $400$ and $1000$ are not. Scaling of the proposed method against the strongest clustering baseline (capacitated $k$-means with our descent) on the same instances. \emph{Assign.} is the part of our time that does not divide across cores.}
+\label{tab:scale}
+\small\begin{tabular*}{\tabw}{@{\extracolsep{\fill}}r l rrr r rr@{}}\toprule
+$|\mathcal{R}|$ & method & travel & tard. & cour. & cost & time & assign.\\\midrule
+$100$ & ours & 1117 & 4 & 20.5 & 3171 & 7\,s & 6\,s\\
+ & baseline & 1936 & 20 & 26.5 & 4606 & 1\,s & ---\\
+ & ALNS & 1589 & 25 & 20.5 & 3664 & 11\,s & ---\\
+\addlinespace[2pt]
+$200$ & ours & 1847 & 1 & 40.5 & 5898 & 18\,s & 13\,s\\
+ & baseline & 3246 & 4 & 47.5 & 8000 & 8\,s & ---\\
+ & ALNS & 3235 & 59 & 40.5 & 7344 & 19\,s & ---\\
+\addlinespace[2pt]
+$400$ & ours & 3527 & 14 & 81.0 & 11642 & 31\,s & 20\,s\\
+ & baseline & 7115 & 41 & 104.0 & 17556 & 36\,s & ---\\
+ & ALNS & 6753 & 158 & 80.5 & 14961 & 90\,s & ---\\
+\addlinespace[2pt]
+$1000$ & ours & 7878 & 24 & 201.0 & 28002 & 50\,s & 20\,s\\
+ & baseline & 16448 & 63 & 262.0 & 42711 & 821\,s & ---\\
+ & ALNS & 23518 & 2602 & 200.5 & 46170 & 1483\,s & ---\\
+\bottomrule\end{tabular*}
+\end{minipage}
+\end{table}
+
+\tabref{tab:scale} runs the comparison at four sizes up
+to $|\mathcal{R}| = 1000$ requests and
+$|\mathcal{K}| = 300$ couriers,
+five times the largest instance in
+\tabref{tab:main}. At that size our proposed method returns a
+solution in 50\,s against 821\,s for the strongest
+clustering baseline, and it is ahead on every component rather than on the
+total alone: travel 7878 against 16448,
+lateness 24 against 63, and
+201 couriers against 262, for a cost
+34\% below the
+baseline's. Of that time, 30\,s is spent in work that is independent per
+courier, namely marginal costs, descent screening and exact routing, and
+20\,s in the assignment program, which is not. With one core per courier
+the first term divides and the second does not, so the attainable speedup is
+about $2.5\times$. The
+decomposition therefore delivers a genuinely parallel workload, and the
+candidate list of Section~\ref{sec:assign} contributes as well, by making
+every step linear in $|\mathcal{R}|$.
+
+
+The ALNS rows of \tabref{tab:scale} are not a comparison at equal wall-clock,
+as its time column shows. ALNS is given our runtime on the same instance as its
+budget, but a budget
+can only be tested between iterations, so the search runs to the end of whichever
+ruin-and-recreate pass is in flight when the budget expires. At
+$100$ and $200$ requests a pass is short enough that this
+costs almost nothing and ALNS keeps to the budget. At $400$ it takes
+three times what it was allowed, and at
+$1000$, where one pass over the whole plan is itself longer
+than the budget, it takes 1483\,s against the
+50\,s it was allowed, a factor of
+30. Even
+with that much extra time its solution is far worse on the two components a
+search should be good at, travel 23518 against
+7878 and lateness 2602 against
+24, while it opens the same fleet as we do,
+200 couriers against 201. A search over complete solutions
+must repair a thousand-request plan at every step, while the decomposition never
+sequences more than $Q_k$ requests at once.
+
+\subsection{Benchmark instances and the boundary of the advantage}\label{sec:external}
+\titledParagraph{Adapted benchmark instances.}\label{sec:lilim}
+The instances above come from our own generator, so we repeat the comparison
+analysis on batches drawn from the Li \& Lim benchmark~\citep{SINTEFLiLimBenchmark}, adapted to
+this setting as Section~\ref{sec:setup} describes. These have window widths,
+spatial layouts and release patterns we did not choose, and they sit at the
+misaligned end of the alignment axis throughout. \tabref{tab:lilim} reports
+them by family.
+
+\begin{table}[t]\centering
+\sbox{\tabbox}{\small\begin{tabular}{@{}l rrrr@{}}\toprule
+& ours & best of six & $+$ descent & ALNS\\\midrule
+\multicolumn{5}{@{}l}{\emph{cost, by family}}\\
+\quad\texttt{lc201} & 1632 & 1799 & 1663 & 1676\\
+\quad\texttt{lc202} & 1581 & 1756 & 1631 & 1556\\
+\quad\texttt{lr201} & 1779 & 1875 & 1814 & 1833\\
+\quad\texttt{lr202} & 1977 & 2208 & 2070 & 2060\\
+\quad\texttt{lrc101} & 2449 & 2827 & 2463 & 2475\\
+\quad\texttt{lrc102} & 2271 & 2787 & 2258 & 2247\\
+\quad\texttt{lrc201} & 2151 & 2517 & 2227 & 2161\\
+\quad\texttt{lrc202} & 2125 & 2546 & 2231 & 2101\\
+\addlinespace[2pt]\midrule
+\multicolumn{5}{@{}l}{\emph{pooled, by component}}\\
+\quad travel & 1066 & 1249 & 1084 & 1076\\
+\quad tardiness & 47 & 140 & 44 & 54\\
+\quad couriers & 8.8 & 9.0 & 9.2 & 8.8\\
+\quad \textbf{cost} & \textbf{1996} & 2289 & 2045 & 2014\\
+\bottomrule\end{tabular}}%
+\setlength{\tabw}{0.80\textwidth}%
+\ifdim\wd\tabbox>\tabw\setlength{\tabw}{\wd\tabbox}\fi
+\begin{minipage}{\tabw}
+\centering
+\caption{$|\mathcal{R}| = 40$ requests, $|\mathcal{K}| = 12$ couriers, $Q_k = 5$, $\varphi = 100$, $\rho = 1$. Adapted Li \& Lim batches. \emph{Upper block}: mean cost by family. \emph{Lower block}: the same batches pooled and split into the terms of~\eqref{eq:globalobj}. \emph{Best of six} takes the cheapest published rule on each instance, \emph{+ descent} the cheapest after our improvement step.}
+\label{tab:lilim}
+\small\begin{tabular*}{\tabw}{@{\extracolsep{\fill}}l rrrr@{}}\toprule
+& ours & best of six & $+$ descent & ALNS\\\midrule
+\multicolumn{5}{@{}l}{\emph{cost, by family}}\\
+\quad\texttt{lc201} & 1632 & 1799 & 1663 & 1676\\
+\quad\texttt{lc202} & 1581 & 1756 & 1631 & 1556\\
+\quad\texttt{lr201} & 1779 & 1875 & 1814 & 1833\\
+\quad\texttt{lr202} & 1977 & 2208 & 2070 & 2060\\
+\quad\texttt{lrc101} & 2449 & 2827 & 2463 & 2475\\
+\quad\texttt{lrc102} & 2271 & 2787 & 2258 & 2247\\
+\quad\texttt{lrc201} & 2151 & 2517 & 2227 & 2161\\
+\quad\texttt{lrc202} & 2125 & 2546 & 2231 & 2101\\
+\addlinespace[2pt]\midrule
+\multicolumn{5}{@{}l}{\emph{pooled, by component}}\\
+\quad travel & 1066 & 1249 & 1084 & 1076\\
+\quad tardiness & 47 & 140 & 44 & 54\\
+\quad couriers & 8.8 & 9.0 & 9.2 & 8.8\\
+\quad \textbf{cost} & \textbf{1996} & 2289 & 2045 & 2014\\
+\bottomrule\end{tabular*}
+\end{minipage}
+\end{table}
+
+Pooled over the 24 benchmark batches our proposed method is
+$-12.2\%$ against the best published rule (24 wins,
+$p<10^{-3}$), a figure that coincides to three significant figures with an
+unrelated one, the $-12.2\%$ against \emph{strengthened}
+rules at $|\mathcal{K}|=18$ in \tabref{tab:fleet}, which is
+measured on generated instances; the two are different comparisons on different
+data and agree by chance. Against the best of those rules carrying our descent
+the margin here is $-2.4\%$
+(18 wins, $p=0.001$). Against ALNS at matched
+wall-clock it is $-0.9\%$ (15/24,
+$p=0.101$), a tie at this number of instances.
+The lower block of \tabref{tab:lilim} gives the components, which locate
+that margin: travel and lateness are nearly level with the best strengthened rule
+and with ALNS, and most of the difference comes from the fleet size.
+
+Both figures are measured at $|\mathcal{R}| = 40$:
+$-8.9\%$ on our generated instances against
+$-2.4\%$ on the benchmark batches. Instance size is therefore not
+what makes the margin smaller here.
+Section~\ref{sec:instancespace} identifies it.
+
+\titledParagraph{Instance structure and the size of the advantage.}\label{sec:instancespace}
+The margin on the benchmark batches is smaller than on the instances generated
+by the design rule of Section~\ref{sec:setup}. Whether that rule yields
+conditions favourable to the proposed method is a question about instance
+structure, and we answer it by moving the generator along the axes on which the
+two datasets differ and watching the margin. Three axes were tried.
+\tabref{tab:instancespace} carries the two swept here; the
+alignment axis was swept already in Section~\ref{sec:alignaxis}.
+Two do not explain the gap and one
+does. The two failures are reported because they say what the effect is
+\emph{not}.
+
+\begin{table}[t]\centering
+\sbox{\tabbox}{\small\begin{tabular}{@{}l r@{\;\;} r@{\;\;} r@{}}\toprule
+setting & property & $+$ desc. & vs.\ ALNS\\\midrule
+\multicolumn{4}{@{}l}{\emph{window width: courier-time ratio}}\\
+\quad width $45$ & $1.77$ & $-9.1\%$ & $-4.1\%$\\
+\quad width $90$ & $2.05$ & $-13.4\%$ & $-5.9\%$\\
+\quad width $180$ & $2.61$ & $-14.9\%$ & $-4.2\%$\\
+\quad width $360$ & $3.75$ & $-14.3\%$ & $-3.6\%$\\
+\quad width $720$ & $6.01$ & $-14.9\%$ & $-4.1\%$\\
+\addlinespace[2pt]
+\multicolumn{4}{@{}l}{\emph{delivery placement: locality}}\\
+\quad local & $0.85$ & $-9.1\%$ & $-3.6\%$\\
+\quad cross & $0.03$ & $-2.0\%$ & $-0.2\%$\\
+\midrule
+benchmark (Li \& Lim) & $0.29$ & $-2.4\%$ & $-0.9\%$\\
+\bottomrule\end{tabular}}%
+\setlength{\tabw}{0.80\textwidth}%
+\ifdim\wd\tabbox>\tabw\setlength{\tabw}{\wd\tabbox}\fi
+\begin{minipage}{\tabw}
+\centering
+\caption{$|\mathcal{R}| = 40$ requests, $|\mathcal{K}| = 12$ couriers, $Q_k = 5$, $\varphi = 100$, $\rho = 1$. Moving our generator towards the benchmark, one axis at a time. Each block reports the measured instance property and the margin against the best of the six rules carrying our descent, and against ALNS. The benchmark row is the adapted Li \& Lim batches at the same size.}
+\label{tab:instancespace}
+\small\begin{tabular*}{\tabw}{@{\extracolsep{\fill}}l r@{\;\;} r@{\;\;} r@{}}\toprule
+setting & property & $+$ desc. & vs.\ ALNS\\\midrule
+\multicolumn{4}{@{}l}{\emph{window width: courier-time ratio}}\\
+\quad width $45$ & $1.77$ & $-9.1\%$ & $-4.1\%$\\
+\quad width $90$ & $2.05$ & $-13.4\%$ & $-5.9\%$\\
+\quad width $180$ & $2.61$ & $-14.9\%$ & $-4.2\%$\\
+\quad width $360$ & $3.75$ & $-14.3\%$ & $-3.6\%$\\
+\quad width $720$ & $6.01$ & $-14.9\%$ & $-4.1\%$\\
+\addlinespace[2pt]
+\multicolumn{4}{@{}l}{\emph{delivery placement: locality}}\\
+\quad local & $0.85$ & $-9.1\%$ & $-3.6\%$\\
+\quad cross & $0.03$ & $-2.0\%$ & $-0.2\%$\\
+\midrule
+benchmark (Li \& Lim) & $0.29$ & $-2.4\%$ & $-0.9\%$\\
+\bottomrule\end{tabular*}
+\end{minipage}
+\end{table}
+
+\titledParagraph{Not the alignment.} Section~\ref{sec:alignaxis} places the
+benchmark at a realised misalignment of $0.61$, beside our hardest setting,
+where our margin is at its largest. If anything the benchmark sits where the
+method should do best.
+
+\titledParagraph{Not the time pressure.} Widening the time windows moves the
+courier-time ratio from $1.77$ to
+$6.01$, across and beyond the benchmark's $2.61$. The
+margin does not shrink; it \emph{grows}, from $-9.1\%$ to
+$-14.9\%$. At the width whose courier-time ratio matches the
+benchmark exactly the margin is $-14.9\%$,
+six times the benchmark's. How much time the fleet has is not the explanation,
+and we had expected it to be.
+
+\titledParagraph{The spatial structure.} What does explain it is where a
+request's delivery lies. Our default generator puts the delivery near its own
+pickup, so the locality defined in Section~\ref{sec:setup}, the fraction of
+requests whose pickup and delivery lie within $10$ of each other, is
+$0.85$. Sending the delivery to a different hub gives
+$0.03$, and the benchmark sits between the two at $0.29$. The margin
+against the strengthened rules collapses from $-9.1\%$ to
+$-2.0\%$ (7/8, $p=0.109$), and against
+ALNS from $-3.6\%$ to $-0.2\%$, within noise of
+the $-2.4\%$ and $-0.9\%$ measured on the benchmark
+itself.
+
+The mechanism is the one Section~\ref{sec:cost} argues for, seen at its
+boundary. When a
+delivery sits near its pickup, a request is effectively a point, the freedom
+lies in which points travel together, and what a group costs is exactly the
+chaining the marginal cost measures and a centroid cannot. When the delivery is
+across the city, every request is a long mandatory traversal, the route is
+dominated by edges no grouping can avoid, and the choice of partition matters
+much less: any sensible grouping followed by a good descent reaches a similar
+place. The benchmark lies towards that end, which is why our advantage there is
+real but small.
+
+Courier dispatch sits at the other end of the same axis. In meal delivery, the
+setting whose operational conditions this paper
+takes as its model~\citep{reyes2018meal, yildiz2019provably,
+ulmer2021restaurant}, and in comparable work such as pharmacy delivery, a
+customer orders from a vendor already close by and the platform serves the order
+within a bounded radius, so a request's pickup and its delivery are near each
+other. That is why the generator of Section~\ref{sec:setup} places each
+delivery near its own pickup, and it is the regime in which the grouping
+criterion rather than the unavoidable edges decides what a solution costs. The
+boundary is stated here because the margin is not uniform across instance
+structures, and because the structures in which it is largest are the ones the
+application presents.
+
+\subsection{Comparison with the metaheuristic reference}
+
+\tabref{tab:main} also lists an adaptive large neighbourhood search under the
+budget of Section~\ref{sec:setup}, our own wall-clock on each instance with a
+ten-second floor. Under that budget
+the decomposition is $-14.2\%$ against it, winning 18 of
+18 instances ($p<10^{-3}$), and \tabref{tab:bysize} splits that by
+size. The difference is not the fleet, since the two dispatch within
+3.7\% of each other at every size. It is travel, where our margin
+widens as the instances grow: $4\%$ at $|\mathcal{R}|=40$, $37\%$ at $|\mathcal{R}|=100$, $47\%$ at $|\mathcal{R}|=200$.
+The explanation is the budget rather than the algorithm. A ruin-and-recreate
+step reinserts requests into a plan spanning the whole instance, so the work per
+improvement grows with $|\mathcal{R}|$, while the decomposition never sequences
+more than $Q_k$ requests at a time and solves each of those exactly. Given our
+wall-clock, ALNS has fewer useful moves the larger the instance is.
+Section~\ref{sec:crossover} removes the budget restriction and measures how
+much more time it needs.
+
+\titledParagraph{Time for the reference to match.}\label{sec:crossover}
+\begin{table}[t]\centering
+\sbox{\tabbox}{\small\begin{tabular}{@{}r@{\;\;} l@{\;\;} r@{\;\;}r@{\;\;}r@{\;\;} r@{\;\;} r@{}}\toprule
+$|\mathcal{R}|$ & & travel & tard. & cour. & cost & time\\\midrule
+$100$ & ours & 1117 & 4 & 20.5 & 3171 & 7.6\,s\\
+ & ALNS & 1252 & 6 & 20.5 & 3307 ($+4\%$) & 300\,s\\
+\addlinespace[2pt]
+$200$ & ours & 1847 & 1 & 40.5 & 5898 & 18.1\,s\\
+ & ALNS & 2454 & 25 & 41.5 & 6629 ($+12\%$) & 300\,s\\
+\addlinespace[2pt]
+$400$ & ours & 3527 & 14 & 81.0 & 11642 & 37.7\,s\\
+ & ALNS & 6129 & 117 & 81.0 & 14345 ($+23\%$) & 300\,s\\
+\bottomrule\end{tabular}}%
+\setlength{\tabw}{0.80\textwidth}%
+\ifdim\wd\tabbox>\tabw\setlength{\tabw}{\wd\tabbox}\fi
+\begin{minipage}{\tabw}
+\centering
+\caption{$|\mathcal{R}| = 100, 200, 400$ requests, $|\mathcal{K}| = 30, 60, 120$ couriers, $Q_k = 5$, $\varphi = 100$, $\rho = 1$. ALNS is stopped as soon as its incumbent reaches the cost of the proposed method, or after 300\,s. It never reached it. Components are shown for both, so the residual gap can be attributed. Two misaligned instances per size, each searched by ALNS with two seeds; the ALNS row is the worse of the two seeds on each instance, the only one whose components were recorded. The better seed is $+4\%$, $+9\%$ and $+21\%$ above the proposed method at the three sizes.}
+\label{tab:crossover}
+\small\begin{tabular*}{\tabw}{@{\extracolsep{\fill}}r@{\;\;} l@{\;\;} r@{\;\;}r@{\;\;}r@{\;\;} r@{\;\;} r@{}}\toprule
+$|\mathcal{R}|$ & & travel & tard. & cour. & cost & time\\\midrule
+$100$ & ours & 1117 & 4 & 20.5 & 3171 & 7.6\,s\\
+ & ALNS & 1252 & 6 & 20.5 & 3307 ($+4\%$) & 300\,s\\
+\addlinespace[2pt]
+$200$ & ours & 1847 & 1 & 40.5 & 5898 & 18.1\,s\\
+ & ALNS & 2454 & 25 & 41.5 & 6629 ($+12\%$) & 300\,s\\
+\addlinespace[2pt]
+$400$ & ours & 3527 & 14 & 81.0 & 11642 & 37.7\,s\\
+ & ALNS & 6129 & 117 & 81.0 & 14345 ($+23\%$) & 300\,s\\
+\bottomrule\end{tabular*}
+\end{minipage}
+\end{table}
+
+Given the same wall-clock the proposed method is ahead, and the natural objection
+is that ALNS would win with more time. \tabref{tab:crossover} tests
+that directly, by stopping the search the moment its incumbent reaches our
+cost. Over every instance and both seeds it never did, inside a budget of
+300\,s against our 7--38\,s, and the shortfall
+widens with size, reaching $+23\%$ at
+$|\mathcal{R}| = 400$, and $+21\%$ for the better of the two seeds.
+
+
+The components say what the residual is, and the obvious guess about it is
+wrong. One might expect a ruin-and-recreate search to be held
+back by the fleet. Closing a courier means relocating every one of its requests,
+and every intermediate step raises the objective, because a route with one
+request left still pays $\varphi$ in full. No standard removal rule performs that
+transformation in a single move. That is not what happens. At $|\mathcal{R}| = 400$ ALNS dispatches
+81.0 couriers against our
+81.0, so it sizes the fleet as we do. The gap is
+travel, 2601 units of it, about
+96\% of the shortfall.
+
+The reason is the size of the neighbourhood rather than its shape, and it is the
+one given above: each ruin-and-recreate step works on a plan spanning the whole
+instance, so three hundred seconds buys proportionally fewer useful moves the
+larger that instance is, which is why the shortfall widens rather than closes. We would expect a longer budget to close it eventually; what
+we can report is that it does not close within the $300$\,s cap, which is eight
+to forty-four times our own runtime depending on the instance.
+
+
+Two caveats keep this in proportion. First, the effect depends on
+$\varphi > 0$: Section~\ref{sec:phizero} repeats the whole comparison with
+dispatch free, and there the two are indistinguishable at matched wall-clock, so
+ALNS would be expected to pass us given more time. Second, the
+comparison uses the standard operator set of~\citet{ropke2006adaptive}; an
+implementation tuned for these sizes, or one carrying a route-elimination
+operator, would be expected to do better than this.
+
+\subsection{The parallel assignment}\label{sec:lagrangianresults}
+
+Section~\ref{sec:lagrangian} replaces the one coupled program by one
+subproblem per courier. \tabref{tab:lagrangian} reports what that costs, in
+components rather than a single percentage, on the same 18 instances as
+\tabref{tab:main}.
+
+\begin{table}[t]\centering
+\sbox{\tabbox}{\small\begin{tabular}{@{}r@{\;\;} l@{\;} r@{\;\;}r@{\;\;}r@{\;\;} r@{\;\;} r@{\;\;} r@{}}\toprule
+$|\mathcal{R}|$ & assignment & travel & tard. & cour. & cost & assign. & $\Delta$\\\midrule
+$40$ & exact program & 624 & 18 & 8.0 & 1441 & 0.2\,s & ---\\
+ & multipliers only & 547 & 6 & 10.0 & 1553 & 0.1\,s & $+7.8\%$\\
+ & $+$ fleet refit & 593 & 13 & 8.7 & 1472 & 0.1\,s & $+2.2\%$\\
+ & $+$ shortlist refit & 614 & 10 & 8.3 & 1457 & 0.3\,s & $+1.1\%$\\
+\addlinespace[2pt]
+$100$ & exact program & 1121 & 67 & 20.7 & 3255 & 3.3\,s & ---\\
+ & multipliers only & 1078 & 11 & 24.5 & 3539 & 0.3\,s & $+8.7\%$\\
+ & $+$ fleet refit & 1057 & 17 & 23.7 & 3441 & 0.3\,s & $+5.7\%$\\
+ & $+$ shortlist refit & 1096 & 81 & 21.2 & 3294 & 1.5\,s & $+1.2\%$\\
+\addlinespace[2pt]
+$200$ & exact program & 1874 & 231 & 40.8 & 6189 & 10.5\,s & ---\\
+ & multipliers only & 1830 & 34 & 46.5 & 6515 & 0.5\,s & $+5.3\%$\\
+ & $+$ fleet refit & 1850 & 72 & 46.0 & 6522 & 0.6\,s & $+5.5\%$\\
+ & $+$ shortlist refit & 1870 & 204 & 41.2 & 6191 & 6.6\,s & $+0.1\%$\\
+\addlinespace[2pt]
+\midrule
+\emph{all} & exact program & 1206 & 105 & 23.2 & 3628 & 4.7\,s & ---\\
+ & multipliers only & 1152 & 17 & 27.0 & 3869 & 0.3\,s & $+7.3\%$\\
+ & $+$ fleet refit & 1166 & 34 & 26.1 & 3812 & 0.3\,s & $+4.5\%$\\
+ & $+$ shortlist refit & 1193 & 98 & 23.6 & 3647 & 2.8\,s & $+0.8\%$\\
+\bottomrule\end{tabular}}%
+\setlength{\tabw}{0.80\textwidth}%
+\ifdim\wd\tabbox>\tabw\setlength{\tabw}{\wd\tabbox}\fi
+\begin{minipage}{\tabw}
+\centering
+\caption{$|\mathcal{R}| = 40, 100, 200$ requests, $|\mathcal{K}| = 12, 30, 60$ couriers, $Q_k = 5$, $\varphi = 100$, $\rho = 1$. The cost of distributing the assignment, on the instances of \tabref{tab:main} at $\varphi = 100$. \emph{Assign.} is the time in the assignment step, the only step that couples couriers; $\Delta$ is the paired cost difference against the exact program. Each block is one problem size; \emph{all} pools the instances of every size, which is what the text quotes.}
+\label{tab:lagrangian}
+\small\begin{tabular*}{\tabw}{@{\extracolsep{\fill}}r@{\;\;} l@{\;} r@{\;\;}r@{\;\;}r@{\;\;} r@{\;\;} r@{\;\;} r@{}}\toprule
+$|\mathcal{R}|$ & assignment & travel & tard. & cour. & cost & assign. & $\Delta$\\\midrule
+$40$ & exact program & 624 & 18 & 8.0 & 1441 & 0.2\,s & ---\\
+ & multipliers only & 547 & 6 & 10.0 & 1553 & 0.1\,s & $+7.8\%$\\
+ & $+$ fleet refit & 593 & 13 & 8.7 & 1472 & 0.1\,s & $+2.2\%$\\
+ & $+$ shortlist refit & 614 & 10 & 8.3 & 1457 & 0.3\,s & $+1.1\%$\\
+\addlinespace[2pt]
+$100$ & exact program & 1121 & 67 & 20.7 & 3255 & 3.3\,s & ---\\
+ & multipliers only & 1078 & 11 & 24.5 & 3539 & 0.3\,s & $+8.7\%$\\
+ & $+$ fleet refit & 1057 & 17 & 23.7 & 3441 & 0.3\,s & $+5.7\%$\\
+ & $+$ shortlist refit & 1096 & 81 & 21.2 & 3294 & 1.5\,s & $+1.2\%$\\
+\addlinespace[2pt]
+$200$ & exact program & 1874 & 231 & 40.8 & 6189 & 10.5\,s & ---\\
+ & multipliers only & 1830 & 34 & 46.5 & 6515 & 0.5\,s & $+5.3\%$\\
+ & $+$ fleet refit & 1850 & 72 & 46.0 & 6522 & 0.6\,s & $+5.5\%$\\
+ & $+$ shortlist refit & 1870 & 204 & 41.2 & 6191 & 6.6\,s & $+0.1\%$\\
+\addlinespace[2pt]
+\midrule
+\emph{all} & exact program & 1206 & 105 & 23.2 & 3628 & 4.7\,s & ---\\
+ & multipliers only & 1152 & 17 & 27.0 & 3869 & 0.3\,s & $+7.3\%$\\
+ & $+$ fleet refit & 1166 & 34 & 26.1 & 3812 & 0.3\,s & $+4.5\%$\\
+ & $+$ shortlist refit & 1193 & 98 & 23.6 & 3647 & 2.8\,s & $+0.8\%$\\
+\bottomrule\end{tabular*}
+\end{minipage}
+\end{table}
+
+The multipliers $\lambda$ of~\eqref{eq:lagr} coordinate one of the two
+decisions well and the other badly: which courier takes a request, and how many
+couriers open. The components separate
+them. The Lagrangian variant travels \emph{less} than the exact program
+(1152 against 1206) and is \emph{more}
+punctual (17 against 105); it loses
+only on the fleet, opening 27.0 couriers against
+23.2, and that one term turns a better route plan into a
+$+7.3\%$ worse solution (0/18 wins,
+$p<10^{-3}$). This is the expected behaviour of a Lagrangian relaxation of a
+fixed-charge problem: a multiplier on the covering constraint tells a courier
+which requests are cheap for it, and nothing tells the couriers collectively how
+many of them should open.
+
+
+Two repairs take the multipliers as a starting point rather than as the answer,
+and both appear in \tabref{tab:lagrangian}. The \emph{fleet refit} keeps the
+set of couriers the multipliers opened, together with the two sizes either side
+of it, and assigns requests to each of those fleets in turn; with the open set
+fixed the dispatch charge is a constant and what remains is a transportation
+problem, so each trial is a linear program. The \emph{shortlist refit} leaves
+the fleet decision open and uses the reduced costs only to narrow the problem,
+keeping for each request the three couriers of lowest reduced cost and solving
+the exact assignment program on what is left.
+
+The second recovers most of the loss, $+0.8\%$ pooled, and more of
+it the larger the instance:
+$+1.1\%$ at $|\mathcal{R}|=40$ against
+$+0.1\%$ at $|\mathcal{R}|=200$. That confirms which
+term carries the gap rather than removing it. That repair is not free: the
+program it solves is smaller than the original but still an integer program, and
+still coupled, which costs
+2.77\,s against the exact program's
+4.66\,s pooled, but only because it is cheaper at the two
+larger sizes; at $|\mathcal{R}|=40$, where the exact program
+closes in 0.17\,s, the repair is the dearer of the two at
+0.26\,s. What the distributed form buys is the coupled step:
+16 times less serial time
+pooled, and a saving that grows with the instance, from
+1.5 times at $|\mathcal{R}|=40$ (0.17\,s against 0.11\,s) to
+21 times at $|\mathcal{R}|=200$, in a step that
+needs no information about other couriers. We therefore use the
+exact assignment in the production method, and report the Lagrangian variant as
+the option for a setting where the assignment must itself be distributed.
+
